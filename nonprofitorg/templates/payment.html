@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="" name="payment-form">
+        <input type="text" name="donation" id="donation">
+        <button id="custom-button" onClick="getDonation()">Pay with card</button>
+</form>
+
+{{ token_hidden.token }}
+
+
+
+
+
+<script src="http://checkout.stripe.com/checkout.js"></script>
+<script>
+    let donation = ""
+    var handler = StripeCheckout.configure({
+        key: "{{ key }}",
+        image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+        local: "auto",
+        token: function(token){
+            console.log(token)
+            document.getElementById('token-hidden').value = token['id']
+            return token
+        }
+    });
+
+    function getDonation(){
+        donation = document.getElementById('donation').value
+        console.log(donation)
+    }
+    document.getElementById("custom-button").addEventListener("click",function(event){
+        //Open checkout with further options if available:
+        handler.open({
+            name:"Post Credits",
+            description: "Change for Life as a developer credits",
+            amount: donation * 100 //cents
+        });
+        event.preventDefault();
+    });
+
+    // Close checkout on page:
+    window.addEventListener("popstate",function(){
+        handler.close();
+    });
+</script>
+<script src="../static/js/payment.js"></script>
+{% endblock content %}
