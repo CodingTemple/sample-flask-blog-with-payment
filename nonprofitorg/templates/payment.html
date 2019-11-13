@@ -7,7 +7,9 @@
         <button id="custom-button" onClick="getDonation()">Pay with card</button>
 </form>
 
-{{ token_hidden.token }}
+<form action="{{ url_for('charge') }}" name="hidden-form" method="POST">
+    {{ token_hidden.token }}
+</form>
 
 
 
@@ -23,6 +25,9 @@
         token: function(token){
             console.log(token)
             document.getElementById('token-hidden').value = token['id']
+            if(document.getElementById('token-hidden').value != null){
+                document.forms['hidden-form'].submit()
+            }
             return token
         }
     });

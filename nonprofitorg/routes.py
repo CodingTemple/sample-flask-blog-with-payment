@@ -84,8 +84,8 @@ def post_detail(post_id):
 def payment():
     # Set your secret key: remember to change this to your live secret key in production
     # See your keys here: http://dashbaord.stripe.com/account/apikeys
-    stripe.api_key = 'sk_test_G2N70GkP646hrLqbSbpFSfgT00yCakN6V0'
-    publishable_key = 'pk_test_MorpLJfz3UvXOa5eTvXuoeMQ00sa7mIpmS'
+    stripe.api_key = 'sk_test_9TeCZ25j0vTd08anOqF1kYK4'
+    publishable_key = 'pk_test_eX3r0a7vvFodinoX73MqSrDN'
     price = 5000
 
     token_hidden = TokenHiddenForm()
@@ -96,6 +96,21 @@ def payment():
             amount=request.args.get('payment-form') ,
             currency='usd',
             description='Example charge',
-            source=request.args.get('token'),
+            source=token_hidden.token.data,
         )
-    return render_template('payment.html',key=publishable_key,price=price,token_hidden = token_hidden)
+    return render_template('payment.html',key=publishable_key,price=price,token_hidden =token_hidden)
+
+
+@app.route('/charge',methods = ['GET','POST'])
+def charge():
+    token_hidden = TokenHiddenForm()
+
+    # token = request.form['stripeToken']# Using Flask
+    if request.method == 'POST':
+        charge = stripe.Charge.create(
+            amount=3400 ,
+            currency='usd',
+            description='Example charge',
+            source=token_hidden.token.data,
+        )
+    return render_template('thanks.html')

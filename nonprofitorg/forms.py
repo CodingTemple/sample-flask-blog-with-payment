@@ -21,4 +21,6 @@ class PostForm(FlaskForm):
 
 class TokenHiddenForm(FlaskForm):
     token = HiddenField("Token Hidden",id="token-hidden")
+    submit = SubmitField()
+    
     

@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+.hidden-submit{
+    position: absolute;
+    visibility: hidden;
+}
+
 body {
     font-family: 'Montserrate', 'sans-serif';
     line-height: 1.6;
